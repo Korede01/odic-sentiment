@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import re
 from .. import schemas
+from transformers import pipeline
 
 from dotenv import load_dotenv
 
@@ -42,6 +43,9 @@ with open(vectorizer_path, 'rb') as vectorizer_file:
 # Initialize the PorterStemmer
 port_stem = PorterStemmer()
 
+# Initialize the summarization pipeline
+summarizer = pipeline("summarization")
+
 # Function for text pre-processing and stemming
 def stemming(content):
     stemmed_content = re.sub('[^a-zA-Z]', ' ', content)
@@ -61,8 +65,11 @@ async def predict(input: schemas.Predict):
     # Predict the result using the loaded model
     prediction = model.predict(input_vector)
     
-    # Return the result
+    # Generate a summary of the input text
+    summary = summarizer(input.text, max_length=50, min_length=25, do_sample=False)[0]['summary_text']
+    
+    # Return the result with the summary
     if prediction[0] == 1:
-        return {"prediction": "threat"}
+        return {"prediction": "Potential Security Threat", "summary": summary}
     else:
-        return {"prediction": "not a threat"}
+        return {"prediction": "No Immediate Threat", "summary": summary}
