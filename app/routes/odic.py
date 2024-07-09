@@ -53,6 +53,9 @@ def stemming(content):
 @router.post("/predict")
 async def predict(input: schemas.Predict):
     
+    if not input.text.strip():
+        raise HTTPException(status_code=400, detail="Empty text")
+    
     try:
         # Pre-process the input text
         processed_text = stemming(input.text)
