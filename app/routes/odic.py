@@ -52,17 +52,21 @@ def stemming(content):
 
 @router.post("/predict")
 async def predict(input: schemas.Predict):
-    # Pre-process the input text
-    processed_text = stemming(input.text)
     
-    # Transform the input text using the loaded vectorizer
-    input_vector = vectorizer.transform([processed_text])
-    
-    # Predict the result using the loaded model
-    prediction = model.predict(input_vector)
-    
-    # Return the result
-    if prediction[0] == 1:
-        return {"prediction": "Potential Security Threat"}
-    else:
-        return {"prediction": "No Immediate Threat"}
+    try:
+        # Pre-process the input text
+        processed_text = stemming(input.text)
+        
+        # Transform the input text using the loaded vectorizer
+        input_vector = vectorizer.transform([processed_text])
+        
+        # Predict the result using the loaded model
+        prediction = model.predict(input_vector)
+        
+        # Return the result
+        if prediction[0] == 1:
+            return {"prediction": "Potential Security Threat"}
+        else:
+            return {"prediction": "No Immediate Threat"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error making prediction: " + str(e))
