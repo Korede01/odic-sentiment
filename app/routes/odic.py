@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 router = APIRouter(
-    prefix='/odic',
+    prefix='/v1',
     tags=['sentiment']
 )
 
