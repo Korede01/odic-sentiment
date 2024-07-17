@@ -7,8 +7,6 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import re
 from .. import schemas
-from ..config import settings
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,12 +20,12 @@ import nltk
 nltk.download('stopwords')
 
 # Define the repository and filenames
-access_token = settings.access_token_read
+access_token = os.getenv("access_token_read")
 login(token=access_token)
 
-repo_id = settings.repo_id
-model_filename = settings.model_filename
-vectorizer_filename = settings.vectorizer_filename
+repo_id = os.getenv("repo_id")
+model_filename = os.getenv("model_filename")
+vectorizer_filename = os.getenv("vectorizer_filename")
 
 # Download and cache the files
 model_path = hf_hub_download(repo_id=repo_id, filename=model_filename)
