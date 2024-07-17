@@ -1,8 +1,8 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import odic
-from config import settings
+from .routes import odic
+from .config import settings
 from dotenv import load_dotenv
 
 load_dotenv()
