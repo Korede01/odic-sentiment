@@ -1,7 +1,8 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import odic
+from routes import odic
+from config import settings
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,7 +15,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:7000"
+        settings.cors_1,
+        settings.cors_2
     ],
     allow_credentials=True,
     allow_methods=["*"],
